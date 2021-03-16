@@ -1,9 +1,17 @@
 [package]
-name = "pyclops"
-version = "0.1.0"
 authors = ["Michael Simpson <michael@wearethorn.org>"]
 edition = "2018"
+name = "pyclops"
+version = "0.1.0"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+crate-type = ["cdylib"]
+name = "pyclops"
 
 [dependencies]
+cyclops = {path = "../cyclops"}
+numpy = "0.13"
+
+[dependencies.pyo3]
+features = ["extension-module"]
+version = "0.13.1"
