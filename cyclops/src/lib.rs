@@ -9,24 +9,24 @@ use opencv::{
     prelude::*,
 };
 
-pub struct Image {
+pub struct OpenCVImage {
     mat: Mat,
 }
 
-impl Image {
+impl OpenCVImage {
     fn new(data: Mat) -> Self {
-        Image { mat: data }
+        Self { mat: data }
     }
 }
 
-impl From<Image> for Array2<i32> {
-    fn from(image: Image) -> Array2<i32> {
+impl From<OpenCVImage> for Array2<i32> {
+    fn from(image: OpenCVImage) -> Array2<i32> {
         mat2d_to_array(image.mat)
     }
 }
 
-pub fn load_img(img_file: &str) -> Result<Image, opencv::Error> {
-    Ok(Image::new(imread(img_file, IMREAD_COLOR)?))
+pub fn load_opencv_img(img_file: &str) -> Result<OpenCVImage, opencv::Error> {
+    Ok(OpenCVImage::new(imread(img_file, IMREAD_COLOR)?))
 }
 
 fn mat2d_to_array(mat: Mat) -> Array<i32, Ix2> {
@@ -41,7 +41,7 @@ fn mat2d_to_array(mat: Mat) -> Array<i32, Ix2> {
         .unwrap()
 }
 
-pub fn get_descriptors(img: &Image) -> Array<i32, Ix2> {
+pub fn get_opencv_descriptors(img: &OpenCVImage) -> Array<i32, Ix2> {
     let mut sift = SIFT::create(5, 3, 0.04, 10.0, 1.6).unwrap();
     let mut mat_descriptors = Mat::default().unwrap();
     let mut kps: Vector<KeyPoint> = Vector::new();
@@ -55,10 +55,20 @@ pub fn get_descriptors(img: &Image) -> Array<i32, Ix2> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::path::Path;
 
+    fn obama_picture() -> String {
+        let crate_dir = Path::new(env!("CARGO_MANIFEST_DIR"));
+        crate_dir
+            .join("tests")
+            .join("obama.jpg")
+            .to_str()
+            .unwrap()
+            .to_owned()
+    }
     #[test]
     fn it_works() {
-        let img = load_img("obama.jpg").unwrap();
-        get_descriptors(&img);
+        let img = load_opencv_img(&obama_picture()).unwrap();
+        get_opencv_descriptors(&img);
     }
 }
