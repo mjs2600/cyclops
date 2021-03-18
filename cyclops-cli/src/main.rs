@@ -10,12 +10,12 @@ struct Opts {
 
 #[derive(Clap)]
 enum SubCommand {
-    SIFTDescriptors(SIFTDescriptors),
+    Descriptors(Descriptors),
 }
 
-/// Calculate the SIFT descriptors for an image.
+/// Calculate the descriptors for an image.
 #[derive(Clap)]
-struct SIFTDescriptors {
+struct Descriptors {
     /// The image filepath to calculate descriptors for.
     image: String,
 }
@@ -24,12 +24,11 @@ fn main() {
     let opts: Opts = Opts::parse();
 
     match opts.subcmd {
-        SubCommand::SIFTDescriptors(t) => sift_descriptors(t),
+        SubCommand::Descriptors(t) => descriptors(t),
     }
 }
 
-fn sift_descriptors(opts: SIFTDescriptors) {
-    let img = cyclops::load_img(&opts.image).unwrap();
-    let descriptors = cyclops::get_descriptors(&img);
+fn descriptors(opts: Descriptors) {
+    let descriptors = cyclops::get_descriptors(&opts.image).unwrap();
     println!("{:?}", descriptors)
 }
