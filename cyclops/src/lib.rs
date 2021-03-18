@@ -1,5 +1,4 @@
-use cv;
-use cv::feature::akaze::Akaze;
+use akaze::Akaze;
 use ndarray::prelude::*;
 use std::error::Error;
 use std::iter::FromIterator;

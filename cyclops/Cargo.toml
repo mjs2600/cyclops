@@ -6,12 +6,14 @@ version = "0.1.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[features]
-gpu = ["faiss/gpu"]
+
+[profile.dev]
+# The akaze crate is too slow without optimizations.
+opt-level = 3
 
 [dependencies]
 bitarray = { version = "0.2.6", features = ["unstable-512-bit-simd"] }
-cv = "0.6.0"
-faiss = { version = "0.9.0" }
+akaze = "0.7.0"
+faiss = { version = "0.9.0", features = ["gpu"] }
 ndarray = "0.14.0"
 image = "0.23.14"
