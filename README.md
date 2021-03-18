@@ -1,3 +1,3 @@
 # Cyclops
 
-Cyclops is an image hashing library.
+Cyclops is a high-performance image deduplication library written in Rust.
