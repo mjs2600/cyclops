@@ -1,5 +1,4 @@
 use clap::Clap;
-use cyclops;
 
 #[derive(Clap)]
 #[clap(version = "0.1", author = "Michael Simpson")]

@@ -10,7 +10,7 @@ pub fn get_descriptors(image: &str) -> Result<Array2<u8>, Box<dyn Error>> {
 
     let descriptors_iter = bit_descriptors
         .iter()
-        .flat_map(|a| a.into_iter().map(|i| i.to_owned()));
+        .flat_map(|a| a.iter().map(|i| i.to_owned()));
     let descriptors = Array::from_iter(descriptors_iter).into_shape((height, width))?;
     Ok(descriptors)
 }

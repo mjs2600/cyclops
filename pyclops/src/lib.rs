@@ -1,4 +1,3 @@
-use cyclops;
 use numpy::{IntoPyArray, PyArray2};
 use pyo3::prelude::*;
 
@@ -7,7 +6,7 @@ use pyo3::prelude::*;
 fn pyclops(_py: Python, m: &PyModule) -> PyResult<()> {
     #[pyfn(m, "descriptors")]
     fn descriptors(py: Python, image_filepath: &str) -> PyResult<Py<PyArray2<u8>>> {
-        let descriptors = cyclops::get_descriptors(&image_filepath).unwrap();
+        let descriptors = cyclops::get_descriptors(image_filepath).unwrap();
         Ok(descriptors.into_pyarray(py).to_owned())
     }
 
