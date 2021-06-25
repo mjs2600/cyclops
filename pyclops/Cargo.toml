@@ -9,9 +9,9 @@ crate-type = ["cdylib"]
 name = "pyclops"
 
 [dependencies]
-cyclops = {path = "../cyclops"}
+cyclops = { path = "../cyclops" }
 numpy = "0.13"
 
 [dependencies.pyo3]
 features = ["extension-module"]
-version = "0.13.1"
+version = "0.13"

@@ -1,7 +1,6 @@
 use akaze::Akaze;
 use ndarray::prelude::*;
 use std::error::Error;
-use std::iter::FromIterator;
 
 pub fn get_descriptors(image: &str) -> Result<Array2<u8>, Box<dyn Error>> {
     let akaze = Akaze::sparse();
