@@ -1,19 +1,19 @@
-use clap::Clap;
+use clap::Parser;
 
-#[derive(Clap)]
+#[derive(Parser)]
 #[clap(version = "0.1", author = "Michael Simpson")]
 struct Opts {
     #[clap(subcommand)]
     subcmd: SubCommand,
 }
 
-#[derive(Clap)]
+#[derive(Parser)]
 enum SubCommand {
     Descriptors(Descriptors),
 }
 
 /// Calculate the descriptors for an image.
-#[derive(Clap)]
+#[derive(Parser)]
 struct Descriptors {
     /// The image filepath to calculate descriptors for.
     image: String,

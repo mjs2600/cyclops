@@ -12,11 +12,11 @@ pub fn get_descriptors(image_file: &str) -> Result<Array2<u8>, Box<dyn Error>> {
     let mut descriptors: Mat = Mat::default();
     sift.detect_and_compute(&image, &no_array(), &mut keypoints, &mut descriptors, false)?;
     let descriptors_iter = (0..descriptors.rows())
-        .flat_map(|row| descriptors.at_row(row).expect("bad row").to_owned());
+        .flat_map(|row| descriptors.at_row(row).expect("bad row").to_owned())
+        .map(|el: f32| el as u8);
 
-    let output: Array2<u8> = Array::from_iter(descriptors_iter)
-        .into_shape((descriptors.rows() as usize, descriptors.cols() as usize))?;
-    Ok(output)
+    Ok(Array::from_iter(descriptors_iter)
+        .into_shape((descriptors.rows() as usize, descriptors.cols() as usize))?)
 }
 
 #[cfg(test)]
@@ -36,6 +36,7 @@ mod tests {
     #[test]
     fn it_works() {
         let descriptors = get_descriptors(&obama_picture()).unwrap();
-        assert!(descriptors.shape() == vec![332, 64]);
+        println!("{:?}", descriptors);
+        assert!(descriptors.shape() == vec![10, 128]);
     }
 }

@@ -1,8 +1,3 @@
 [workspace]
 
 members = ["cyclops", "cyclops-cli", "pyclops"]
-
-[profile.dev]
-
-# The akaze crate is too slow without optimizations.
-opt-level = 3

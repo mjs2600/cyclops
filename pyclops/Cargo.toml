@@ -10,8 +10,8 @@ name = "pyclops"
 
 [dependencies]
 cyclops = { path = "../cyclops" }
-numpy = "0.13"
+numpy = "0.15"
 
 [dependencies.pyo3]
 features = ["extension-module"]
-version = "0.13"
+version = "0.15"
