@@ -1,18 +1,22 @@
-use akaze::Akaze;
 use ndarray::prelude::*;
+use opencv::core::{no_array, KeyPoint, Vector};
+use opencv::features2d::SIFT;
+use opencv::imgcodecs::{imread, IMREAD_COLOR};
+use opencv::prelude::*;
 use std::error::Error;
 
-pub fn get_descriptors(image: &str) -> Result<Array2<u8>, Box<dyn Error>> {
-    let akaze = Akaze::sparse();
-    let (_, bit_descriptors) = akaze.extract_path(image)?;
-    let height = bit_descriptors.len();
-    let width = bit_descriptors[0].len();
+pub fn get_descriptors(image_file: &str) -> Result<Array2<u8>, Box<dyn Error>> {
+    let mut sift = SIFT::create(10, 3, 0.04, 10.0, 1.6)?;
+    let image = imread(&image_file, IMREAD_COLOR)?;
+    let mut keypoints: Vector<KeyPoint> = Vector::new();
+    let mut descriptors: Mat = Mat::default();
+    sift.detect_and_compute(&image, &no_array(), &mut keypoints, &mut descriptors, false)?;
+    let descriptors_iter = (0..descriptors.rows())
+        .flat_map(|row| descriptors.at_row(row).expect("bad row").to_owned());
 
-    let descriptors_iter = bit_descriptors
-        .iter()
-        .flat_map(|a| a.iter().map(|i| i.to_owned()));
-    let descriptors = Array::from_iter(descriptors_iter).into_shape((height, width))?;
-    Ok(descriptors)
+    let output: Array2<u8> = Array::from_iter(descriptors_iter)
+        .into_shape((descriptors.rows() as usize, descriptors.cols() as usize))?;
+    Ok(output)
 }
 
 #[cfg(test)]
